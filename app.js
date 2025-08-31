@@ -4,69 +4,19 @@
 
 /* -------------------------------------------------------- */
 
-const NAME = "Reyes";
-
 const CARDS = [
-  {
-    name: "Discord",
-    icon: "ri-discord-fill",
-    link: "https://discord.com/app",
-    color: "#5865F2",
-  },
-  {
-    name: "Reddit",
-    icon: "ri-reddit-fill",
-    link: "https://www.reddit.com/",
-    color: "#FF4500",
-  },
-  {
-    name: "Figma",
-    icon: "ri-pen-nib-fill",
-    link: "https://www.figma.com/",
-  },
-  {
-    name: "Github",
-    icon: "ri-github-fill",
-    link: "https://github.com/",
-  },
-  {
-    name: "Twitter",
-    icon: "ri-twitter-fill",
-    link: "https://twitter.com",
-    color: "#1DA1F2",
-  },
-  {
-    name: "Dribbble",
-    icon: "ri-dribbble-fill",
-    link: "https://dribbble.com/",
-    color: "#ea4c89",
-  },
-  {
-    name: "Hashnode",
-    icon: "ri-newspaper-line",
-    link: "https://hashnode.com/",
-  },
-  {
-    name: "CodeSandbox",
-    icon: "ri-braces-fill",
-    link: "https://codesandbox.io/dashboard/",
-  },
   {
     name: "YouTube",
     icon: "ri-youtube-fill",
-    link: "https://www.youtube.com/",
+    link: "https://youtube.com/tv",
     color: "#FF0000",
   },
   {
-    name: "LinkedIn",
-    icon: "ri-linkedin-fill",
-    link: "https://www.linkedin.com/",
-  },
-  {
-    name: "Gmail",
-    icon: "ri-google-fill",
-    link: "https://mail.google.com/",
-  },
+    name: "ARD Mediathek",
+    icon: "ri-tv-line",
+    link: "https://tv.ardmediathek.de/index.html?platform=browser",
+    color: "#005696",
+  }
 ];
 
 /* -------------------------------------------------------- */
@@ -100,6 +50,8 @@ const MONTHS = [
   "December",
 ];
 
+var currentCardSelected = 0;
+
 const updateDate = () => {
   // Create a new Date object and get the complete Date/Time information
   const completeDate = new Date();
@@ -115,9 +67,7 @@ const updateDate = () => {
   let currentYear = completeDate.getFullYear();
 
   // Update the Time
-  currentTime.innerHTML = `${
-    currentHour % 12 == 0 ? "12" : currentHour % 12
-  }:${currentMinute} ${currentHour > 11 ? "PM" : "AM"}`;
+  currentTime.innerHTML = `${currentHour}:${currentMinute}`;
 
   // Update the Date
   currentDate.innerHTML = `${DAYS[currentDay]} ${currentNumber}, ${MONTHS[currentMonth]} ${currentYear}`;
@@ -128,44 +78,6 @@ const updateDate = () => {
   }, 1000);
 };
 
-const addCustomColorListener = (htmlNode, card) => {
-  // If a `customColor` isn't provided, don't do anything
-  if (!card?.color) return;
-
-  // Add custom color whenever the cursor enters the card
-  htmlNode.addEventListener("mouseenter", (event) => {
-    htmlNode.style.color = card.color;
-    htmlNode.style.borderColor = card.color;
-
-    event.target.setAttribute("isHovered", true);
-  });
-
-  // Remove custom color whenever the cursor leaves the card
-  htmlNode.addEventListener("mouseleave", (event) => {
-    event.target.setAttribute("isHovered", false);
-    if (event.target.getAttribute("isFocused") == "true") return;
-
-    htmlNode.style.color = "white";
-    htmlNode.style.borderColor = "rgba(255, 255, 255, 0.05)";
-  });
-
-  // Add custom color whenever the card is focused
-  htmlNode.addEventListener("focus", (event) => {
-    htmlNode.style.color = card.color;
-    htmlNode.style.borderColor = card.color;
-
-    event.target.setAttribute("isFocused", true);
-  });
-
-  // Remove custom color whenever the card is blurred
-  htmlNode.addEventListener("blur", (event) => {
-    event.target.setAttribute("isFocused", false);
-    if (event.target.getAttribute("isHovered") == "true") return;
-
-    htmlNode.style.color = "white";
-    htmlNode.style.borderColor = "rgba(255, 255, 255, 0.05)";
-  });
-};
 
 const formatDigit = (digit) => {
   return digit > 9 ? `${digit}` : `0${digit}`;
@@ -176,6 +88,7 @@ const formatDigit = (digit) => {
 /******************/
 
 const printCards = () => {
+  var currentLoopingCard = 0;
   for (const card of CARDS) {
     let currentCard = document.createElement("a");
     let currentCardText = document.createElement("p");
@@ -202,7 +115,10 @@ const printCards = () => {
 
     cardContainer.appendChild(currentCard);
 
-    addCustomColorListener(currentCard, card);
+    if (currentLoopingCard === currentCardSelected) {
+      currentCard.style.color = card.color;
+      currentCard.style.borderColor = card.color;
+    }
 
     // Handle the click event
     currentCard.addEventListener("click", async (event) => {
@@ -226,13 +142,33 @@ const printCards = () => {
         }, 1500);
       }
     });
+    currentLoopingCard++;
   }
+  // Create a Loop
+  setTimeout(() => {
+    cardContainer.innerHTML = "";
+    printCards();
+  }, 50);
 };
+
+document.onkeydown = function(e) {
+    switch (e.keyCode) {
+        case 37:
+            currentCardSelected = currentCardSelected < 1 ? 0 : currentCardSelected - 1;
+            break;
+        case 39:
+            currentCardSelected = currentCardSelected > CARDS.length - 2 ? CARDS.length - 1 : currentCardSelected + 1;
+            break;
+        case 13:
+            location.replace(CARDS[currentCardSelected].link);
+            break;
+    }
+};
+
 
 /****************/
 /* STARTER CODE */
 /****************/
 
-userName.innerHTML = NAME;
 printCards();
 updateDate();
