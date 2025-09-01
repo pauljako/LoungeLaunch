@@ -16,6 +16,12 @@ const CARDS = [
     icon: "ri-tv-line",
     link: "https://tv.ardmediathek.de/index.html?platform=browser",
     color: "#005696",
+  },
+  {
+    name: "Internet",
+    icon: "ri-global-fill",
+    link: "https://web.tabliss.io",
+    color: "#FFE4C4"
   }
 ];
 
