@@ -88,6 +88,7 @@ const formatDigit = (digit) => {
 /******************/
 
 const printCards = () => {
+  cardContainer.innerHTML = "";
   var currentLoopingCard = 0;
   for (const card of CARDS) {
     let currentCard = document.createElement("a");
@@ -144,11 +145,6 @@ const printCards = () => {
     });
     currentLoopingCard++;
   }
-  // Create a Loop
-  setTimeout(() => {
-    cardContainer.innerHTML = "";
-    printCards();
-  }, 50);
 };
 
 document.onkeydown = function(e) {
@@ -160,9 +156,10 @@ document.onkeydown = function(e) {
             currentCardSelected = currentCardSelected > CARDS.length - 2 ? CARDS.length - 1 : currentCardSelected + 1;
             break;
         case 13:
-            location.replace(CARDS[currentCardSelected].link);
+            window.open(CARDS[currentCardSelected].link, "_blank", "width=0,height=0");
             break;
     }
+    printCards();
 };
 
 
