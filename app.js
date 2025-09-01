@@ -119,6 +119,7 @@ const printCards = () => {
     if (currentLoopingCard === currentCardSelected) {
       currentCard.style.color = card.color;
       currentCard.style.borderColor = card.color;
+      currentCard.style.transform = "scale(1.05)";
     }
 
     // Handle the click event
