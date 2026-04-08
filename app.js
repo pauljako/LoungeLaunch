@@ -12,17 +12,29 @@ const CARDS = [
     color: "#FF0000",
   },
   {
+    name: "Twitch",
+    icon: "ri-twitch-fill",
+    link: "https://celadon-arztjmkowcbjjgq11.tv.twitch.tv",
+    color: "#772CE8",
+  },
+  {
     name: "ARD Mediathek",
     icon: "ri-tv-line",
     link: "https://tv.ardmediathek.de/index.html?platform=browser",
     color: "#005696",
   },
   {
+    name: "ZDF",
+    icon: "ri-tv-line",
+    link: "https://new-hbbtv.zdf.de",
+    color: "#FA7D19",
+  },
+  {
     name: "Internet",
     icon: "ri-global-fill",
     link: "https://web.tabliss.io",
-    color: "#FFE4C4"
-  }
+    color: "#FFE4C4",
+  },
 ];
 
 /* -------------------------------------------------------- */
@@ -83,7 +95,6 @@ const updateDate = () => {
     updateDate();
   }, 1000);
 };
-
 
 const formatDigit = (digit) => {
   return digit > 9 ? `${digit}` : `0${digit}`;
@@ -154,21 +165,28 @@ const printCards = () => {
   }
 };
 
-document.onkeydown = function(e) {
-    switch (e.keyCode) {
-        case 37:
-            currentCardSelected = currentCardSelected < 1 ? 0 : currentCardSelected - 1;
-            break;
-        case 39:
-            currentCardSelected = currentCardSelected > CARDS.length - 2 ? CARDS.length - 1 : currentCardSelected + 1;
-            break;
-        case 13:
-            window.open(CARDS[currentCardSelected].link, "_blank", "width=0,height=0");
-            break;
-    }
-    printCards();
+document.onkeydown = function (e) {
+  switch (e.keyCode) {
+    case 37:
+      currentCardSelected =
+        currentCardSelected < 1 ? 0 : currentCardSelected - 1;
+      break;
+    case 39:
+      currentCardSelected =
+        currentCardSelected > CARDS.length - 2
+          ? CARDS.length - 1
+          : currentCardSelected + 1;
+      break;
+    case 13:
+      window.open(
+        CARDS[currentCardSelected].link,
+        "_blank",
+        "width=0,height=0",
+      );
+      break;
+  }
+  printCards();
 };
-
 
 /****************/
 /* STARTER CODE */
